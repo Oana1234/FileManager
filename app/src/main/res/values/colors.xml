@@ -6,4 +6,5 @@
 
     <color name="colorBackground">#EEEEEE</color>
 =    <color name="grey">#706C6C</color>
+    <color name="light_gray">#EBE3E3</color>
 </resources>

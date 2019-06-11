@@ -31,10 +31,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
                 path = Environment.getExternalStorageDirectory().absolutePath
             }
 
-//            replaceFragment(
-//                filesListFragment, true
-//            )
-
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, filesListFragment)
                 .addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
