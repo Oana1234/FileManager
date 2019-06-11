@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">File Manager</string>
+    <string name="file_change_broadcast">com.example.filemanager.file_change_broadcast</string>
+
+</resources>
