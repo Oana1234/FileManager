@@ -11,6 +11,9 @@ import com.example.filemanager.base.model.FileModel
 import com.example.filemanager.base.view.BaseRecyclerViewAdapter
 import com.example.filemanager.base.view.BaseViewHolder
 import com.example.filemanager.utils.FileType
+import com.example.filemanager.utils.getFileModelsFromFiles
+import com.example.filemanager.utils.getFilesFromPath
+import kotlinx.android.synthetic.main.fragment_files_list.*
 import kotlinx.android.synthetic.main.item_file_row.view.*
 
 class FilesRecyclerViewAdapter : BaseRecyclerViewAdapter<FileModel>() {
@@ -29,7 +32,6 @@ class FilesRecyclerViewAdapter : BaseRecyclerViewAdapter<FileModel>() {
         super.onBindViewHolder(holder, position)
     }
 
-
     class FilesViewHolder(itemView: View) : BaseViewHolder<FileModel>(itemView) {
         override fun bind(item: FileModel) {
             itemView.apply {
@@ -46,4 +48,6 @@ class FilesRecyclerViewAdapter : BaseRecyclerViewAdapter<FileModel>() {
             }
         }
     }
+
+
 }

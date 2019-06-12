@@ -24,15 +24,25 @@ class FilesListFragment : BaseFragment() {
 
         internal val ARG_PATH: String = "com.example.filemanager.fileslist.path"
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build(ARG_PATH)
-
     }
 
     private lateinit var PATH: String
 
     private val filesListRvAdapter: FilesRecyclerViewAdapter by lazy { FilesRecyclerViewAdapter() }
     private var filesList = mutableListOf<FileModel>()
-
     override fun setUp() {
+
+        val filePath = arguments?.getString(ARG_PATH)
+        if (filePath == null) {
+            Toast.makeText(context, "Path should not be null!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        else{
+            PATH = filePath
+            initViews()
+            hideEmptyListLayout()
+            filesListRvAdapter.refreshList(filesList)
+        }
 
     }
 
@@ -46,22 +56,13 @@ class FilesListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val filePath = arguments?.getString(ARG_PATH)
-        if (filePath == null) {
-            Toast.makeText(context, "Path should not be null!", Toast.LENGTH_SHORT).show()
-            return
-        }
-        PATH = filePath
-
-        initViews()
-        filesListRvAdapter.refreshList(filesList)
 
     }
 
     @WithPermissions(
         permissions = [Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE]
     )
-    private fun initData() {
+    private fun hideEmptyListLayout() {
 
         filesList = getFileModelsFromFiles(getFilesFromPath(PATH))
 
@@ -79,8 +80,6 @@ class FilesListFragment : BaseFragment() {
                 adapter = filesListRvAdapter
             }
         }
-
-        initData()
     }
 
 }
