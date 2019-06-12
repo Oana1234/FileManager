@@ -34,13 +34,13 @@ class FilesListFragment : BaseFragment() {
 
         val filePath = arguments?.getString(ARG_PATH)
         if (filePath == null) {
-            Toast.makeText(context, "Path should not be null!", Toast.LENGTH_SHORT).show()
+        //    Toast.makeText(context, "Path should not be null!", Toast.LENGTH_SHORT).show()
             return
         }
         else{
             PATH = filePath
             initViews()
-            hideEmptyListLayout()
+            filesList = getFileModelsFromFiles(getFilesFromPath(PATH))
             filesListRvAdapter.refreshList(filesList)
         }
 
@@ -62,16 +62,7 @@ class FilesListFragment : BaseFragment() {
     @WithPermissions(
         permissions = [Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE]
     )
-    private fun hideEmptyListLayout() {
 
-        filesList = getFileModelsFromFiles(getFilesFromPath(PATH))
-
-        if (filesList.isEmpty()) {
-            emptyFolderLayout.visibility = View.VISIBLE
-        } else {
-            emptyFolderLayout.visibility = View.INVISIBLE
-        }
-    }
 
     private fun initViews() {
         context?.let { ctx ->
