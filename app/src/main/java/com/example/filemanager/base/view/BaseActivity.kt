@@ -47,8 +47,6 @@ abstract class BaseActivity: AppCompatActivity(), MVPView, BaseFragment.CallBack
         }
     }
 
-
-
     fun getVisibleFragment(): Fragment? {
         val fragmentManager = getSupportFragmentManager()
         val fragments = fragmentManager.getFragments()

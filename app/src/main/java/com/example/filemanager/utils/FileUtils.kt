@@ -3,7 +3,6 @@ package com.example.filemanager.utils
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
-import androidx.lifecycle.Transformations.map
 import com.example.filemanager.base.model.FileModel
 import java.io.File
 

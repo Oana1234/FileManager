@@ -10,7 +10,6 @@ import kotlin.properties.Delegates
 abstract class BaseRecyclerViewAdapter <T> (private val compareFun: (T, T) -> Boolean = { o, n -> o == n })
     : RecyclerView.Adapter<BaseViewHolder<T>>(), AutoUpdatableAdapter{
 
-
     private var items: MutableList<T> by Delegates.observable(mutableListOf()) { _, old, new ->
         autoNotify(old, new) { o, n -> compareFun(o, n) }
     }
@@ -45,4 +44,5 @@ abstract class BaseRecyclerViewAdapter <T> (private val compareFun: (T, T) -> Bo
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
     }
+
 }

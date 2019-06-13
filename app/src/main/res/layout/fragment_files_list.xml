@@ -8,6 +8,7 @@
             android:id="@+id/mainRecycleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="45dp"
             style="@style/myRecyclerViewStyle"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
     />

@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.filemanager.ui.FilesListFragment
+import com.example.filemanager.ui.main.fileslist.view.FilesListFragment
 import dagger.android.support.AndroidSupportInjection
 
 abstract class BaseFragment : Fragment(), MVPView{
@@ -45,17 +45,5 @@ abstract class BaseFragment : Fragment(), MVPView{
     }
 
     abstract fun setUp()
-
-    class Builder {
-        var path: String = ""
-
-        fun build(s : String): FilesListFragment {
-            val fragment = FilesListFragment()
-            val args = Bundle()
-            args.putString(s, path)
-            fragment.arguments = args;
-            return fragment
-        }
-    }
 
 }
