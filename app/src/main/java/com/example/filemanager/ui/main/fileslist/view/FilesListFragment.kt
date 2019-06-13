@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filemanager.R
@@ -17,7 +16,6 @@ import com.example.filemanager.utils.getFileModelsFromFiles
 import com.example.filemanager.utils.getFilesFromPath
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions
 import kotlinx.android.synthetic.main.fragment_files_list.*
-
 
 class FilesListFragment : BaseFragment() {
 
@@ -37,7 +35,6 @@ class FilesListFragment : BaseFragment() {
         fun onLongClick(fileModel: FileModel)
     }
 
-
     override fun setUp() {
 
         val filePath = arguments?.getString(ARG_PATH)
@@ -49,12 +46,10 @@ class FilesListFragment : BaseFragment() {
             filesList = getFileModelsFromFiles(getFilesFromPath(PATH))
             filesListRvAdapter.refreshList(filesList)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setOrientation(resources.configuration)
     }
 
     override fun onCreateView(
@@ -65,14 +60,13 @@ class FilesListFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_files_list, container, false)
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         try {
             mCallback = context as OnItemClickListener
         } catch (e: Exception) {
-            throw Exception("${context} should implement FilesListFragment.OnItemCLickListener")
+            throw Exception("$context should implement FilesListFragment.OnItemCLickListener")
         }
     }
 
@@ -83,47 +77,41 @@ class FilesListFragment : BaseFragment() {
 
         context?.let { ctx ->
 
-            mainRecycleView.apply {
-                layoutManager = LinearLayoutManager(ctx)
-                adapter = filesListRvAdapter
-            }
-
+//            mainRecycleView.apply {
+//                layoutManager = LinearLayoutManager(ctx)
+//                adapter = filesListRvAdapter
+//            }
+            setOrientation(resources.configuration.orientation)
 
             filesListRvAdapter.onItemClickListener = { file, itemView: View, _: Int ->
                 mCallback.onClick(file)
+
             }
             filesListRvAdapter.onItemLongClickListener = { file, _ ->
                 mCallback.onLongClick(file)
                 true
             }
-
         }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
-        setOrientation(newConfig)
+        setOrientation(newConfig.orientation)
     }
 
-    private fun setOrientation(newConfig: Configuration) {
 
-
+    private fun setOrientation(orientation: Int) {
         context?.let { ctx ->
-            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-                mainRecycleView.apply {
-                    layoutManager = GridLayoutManager(ctx, 2)
-                    adapter = filesListRvAdapter
+            mainRecycleView?.apply {
+                layoutManager = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    GridLayoutManager(ctx, 2)
+                } else {
+                    GridLayoutManager(ctx, 1)
                 }
-            } else {
-                mainRecycleView.apply {
-                    layoutManager = LinearLayoutManager(ctx)
-                    adapter = filesListRvAdapter
-                }
+                adapter = filesListRvAdapter
             }
         }
-
     }
 
     class Builder {
@@ -137,5 +125,4 @@ class FilesListFragment : BaseFragment() {
             return fragment
         }
     }
-
 }
