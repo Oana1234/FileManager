@@ -2,10 +2,13 @@ package com.example.filemanager.ui.main.fileslist.view
 
 import android.Manifest
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filemanager.R
 import com.example.filemanager.base.model.FileModel
@@ -51,7 +54,7 @@ class FilesListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setOrientation(resources.configuration)
     }
 
     override fun onCreateView(
@@ -97,23 +100,31 @@ class FilesListFragment : BaseFragment() {
         }
     }
 
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//
-//        setGridforLandscape(newConfig)
-//    }
-//
-//    private fun setGridforLandscape(newConfig: Configuration) {
-//
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//
-//            mainRecycleView.apply {
-//                layoutManager = GridLayoutManager(context,2)
-//                adapter = filesListRvAdapter
-//            }
-//        }
-//
-//    }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        setOrientation(newConfig)
+    }
+
+    private fun setOrientation(newConfig: Configuration) {
+
+
+        context?.let { ctx ->
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+                mainRecycleView.apply {
+                    layoutManager = GridLayoutManager(ctx, 2)
+                    adapter = filesListRvAdapter
+                }
+            } else {
+                mainRecycleView.apply {
+                    layoutManager = LinearLayoutManager(ctx)
+                    adapter = filesListRvAdapter
+                }
+            }
+        }
+
+    }
 
     class Builder {
         var path: String = ""
