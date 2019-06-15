@@ -1,15 +1,18 @@
 package com.example.filemanager.base.view
 
+import android.Manifest
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.filemanager.R
+import com.tedpark.tedpermission.rx2.TedRx2Permission
 import dagger.android.AndroidInjection
 
 abstract class BaseActivity: AppCompatActivity(), MVPView, BaseFragment.CallBack {
@@ -20,6 +23,7 @@ abstract class BaseActivity: AppCompatActivity(), MVPView, BaseFragment.CallBack
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
+
         getDefaultFragment()?.let {
             replaceFragment(it,false)
         }

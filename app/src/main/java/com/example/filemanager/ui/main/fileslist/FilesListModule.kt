@@ -1,12 +1,15 @@
 package com.example.filemanager.ui.main.fileslist
 
-import com.example.filemanager.ui.main.fileslist.view.FilesListFragment
+import com.example.filemanager.ui.main.fileslist.presenter.FilesListMVPPresenter
+import com.example.filemanager.ui.main.fileslist.presenter.FilesListPresenter
+import com.example.filemanager.ui.main.fileslist.view.FilesListMVPView
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
+import dagger.Provides
 
 @Module
-abstract class FilesListModule {
+class FilesListModule {
 
-    @ContributesAndroidInjector
-    abstract internal fun provideFilesListFragment(): FilesListFragment
+    @Provides
+    internal fun provideFilesListPresenter(filesListPresenter: FilesListPresenter<FilesListMVPView>)
+            : FilesListMVPPresenter<FilesListMVPView> = filesListPresenter
 }

@@ -2,7 +2,7 @@ package com.example.filemanager.di
 
 import com.example.filemanager.ui.settings.SettingsActivity
 import com.example.filemanager.ui.main.MainActivity
-import com.example.filemanager.ui.main.fileslist.FilesListModule
+import com.example.filemanager.ui.main.fileslist.FileListFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,7 +10,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = [
-        (FilesListModule::class)])
+        (FileListFragmentProvider::class)])
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector

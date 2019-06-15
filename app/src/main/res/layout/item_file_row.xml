@@ -7,13 +7,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:foreground="?selectableItemBackground"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@drawable/file_selected_background"
+>
 
     <TextView
             android:id="@+id/nameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -1,10 +1,14 @@
 package com.example.filemanager.base.view
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.filemanager.R
 import com.example.filemanager.ui.main.fileslist.view.FilesListFragment
+import com.tedpark.tedpermission.rx2.TedRx2Permission
 import dagger.android.support.AndroidSupportInjection
 
 abstract class BaseFragment : Fragment(), MVPView{

@@ -1,19 +1,17 @@
 package com.example.filemanager.ui.settings
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.Preference
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import com.example.filemanager.R
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
+import android.os.Environment
+import android.util.Log
 import androidx.preference.EditTextPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.settings_dialog_edit_text.*
-import android.R.attr.key
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -39,28 +37,36 @@ class SettingsActivity : AppCompatActivity() {
 
         return true
     }
-
 }
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var defaultFolderPath: String
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+
+        if (key == "path") {
+            val preference: Preference = findPreference(key)
+            if (preference is EditTextPreference) run {
+                updateSummary(preference)
+            }
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
-        if(rootKey=="path"){
-            Log.i("AAA", "damnmmmmmmmmmmm")
-        }
+
     }
 
-    override fun onDisplayPreferenceDialog(preference: androidx.preference.Preference?) {
-        super.onDisplayPreferenceDialog(preference)
-        if (preference is EditTextPreference) {
-
-        }
+    override fun onStart() {
+        super.onStart()
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        defaultFolderPath = sharedPreferences.getString("path", Environment.getExternalStorageDirectory().absolutePath)
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    fun updateSummary(editTextPreference: EditTextPreference) {
+        editTextPreference.summary = defaultFolderPath
     }
 
 

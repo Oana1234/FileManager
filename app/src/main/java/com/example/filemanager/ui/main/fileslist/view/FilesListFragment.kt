@@ -7,23 +7,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filemanager.R
 import com.example.filemanager.base.model.FileModel
 import com.example.filemanager.base.view.BaseFragment
+import com.example.filemanager.ui.main.fileslist.presenter.FilesListMVPPresenter
 import com.example.filemanager.utils.getFileModelsFromFiles
 import com.example.filemanager.utils.getFilesFromPath
-import com.livinglifetechway.quickpermissions.annotations.WithPermissions
 import kotlinx.android.synthetic.main.fragment_files_list.*
+import javax.inject.Inject
+import android.content.pm.PackageManager
+import androidx.annotation.NonNull
+import com.example.filemanager.utils.PermissionManager
 
-class FilesListFragment : BaseFragment() {
+
+class FilesListFragment : BaseFragment(), FilesListMVPView {
+
+    override fun openSettingsActivity() {
+    }
 
     companion object {
         internal val ARG_PATH: String = "com.example.filemanager.fileslist.path"
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build(ARG_PATH)
     }
 
+    @Inject
+    internal lateinit var presenter: FilesListMVPPresenter<FilesListMVPView>
     private lateinit var PATH: String
     private val filesListRvAdapter: FilesRecyclerViewAdapter by lazy { FilesRecyclerViewAdapter() }
     private var filesList = mutableListOf<FileModel>()
@@ -37,20 +47,18 @@ class FilesListFragment : BaseFragment() {
 
     override fun setUp() {
 
+        initViews()
+
         val filePath = arguments?.getString(ARG_PATH)
         if (filePath == null) {
             return
         } else {
             PATH = filePath
-            initViews()
             filesList = getFileModelsFromFiles(getFilesFromPath(PATH))
             filesListRvAdapter.refreshList(filesList)
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,17 +78,12 @@ class FilesListFragment : BaseFragment() {
         }
     }
 
-    @WithPermissions(
-        permissions = [Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE]
-    )
+
+
     private fun initViews() {
 
         context?.let { ctx ->
 
-//            mainRecycleView.apply {
-//                layoutManager = LinearLayoutManager(ctx)
-//                adapter = filesListRvAdapter
-//            }
             setOrientation(resources.configuration.orientation)
 
             filesListRvAdapter.onItemClickListener = { file, itemView: View, _: Int ->
@@ -96,7 +99,6 @@ class FilesListFragment : BaseFragment() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
         setOrientation(newConfig.orientation)
     }
 
@@ -114,6 +116,11 @@ class FilesListFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroy() {
+        presenter.onDetach()
+        super.onDestroy()
+    }
+
     class Builder {
         var path: String = ""
 
@@ -125,4 +132,6 @@ class FilesListFragment : BaseFragment() {
             return fragment
         }
     }
+
+
 }

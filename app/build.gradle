@@ -64,6 +64,9 @@ dependencies {
     //preferences
     implementation "androidx.preference:preference:1.0.0"
 
+    //permissions
+    implementation 'gun0912.ted:tedpermission-rx2:2.2.2'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -9,7 +9,7 @@ abstract class BasePresenter <V : MVPView> internal constructor(
     protected val compositeDisposable: CompositeDisposable
 ) : MVPPresenter<V> {
 
-    var view: V? = null
+    private var view: V? = null
 
     private val isViewAttached: Boolean get() = view != null
 
@@ -17,7 +17,7 @@ abstract class BasePresenter <V : MVPView> internal constructor(
         this.view = view
     }
 
-    override fun getViewDem(): V? = view
+    override fun getView(): V? = view
 
     override fun onDetach() {
         compositeDisposable.dispose()

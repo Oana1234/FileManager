@@ -9,16 +9,19 @@ import com.example.filemanager.base.view.BaseRecyclerViewAdapter
 import com.example.filemanager.base.view.BaseViewHolder
 import com.example.filemanager.utils.FileType
 import kotlinx.android.synthetic.main.item_file_row.view.*
+import android.util.SparseBooleanArray
 
 class FilesRecyclerViewAdapter : BaseRecyclerViewAdapter<FileModel>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<FileModel> =
-        FilesViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<FileModel> {
+
+        return FilesViewHolder(
             getViewHolderView(
                 parent,
                 R.layout.item_file_row
-            )
-        )
+            ))
+
+    }
 
     override fun onBindViewHolder(holder: BaseViewHolder<FileModel>, position: Int) {
         holder.itemView.startAnimation(
@@ -27,11 +30,15 @@ class FilesRecyclerViewAdapter : BaseRecyclerViewAdapter<FileModel>() {
                 R.anim.fall_down
             )
         )
+
         super.onBindViewHolder(holder, position)
     }
 
     class FilesViewHolder(itemView: View) : BaseViewHolder<FileModel>(itemView) {
+
         override fun bind(item: FileModel) {
+
+
             itemView.apply {
                 nameTextView.text = item.name
                 if (item.fileType == FileType.FOLDER) {
