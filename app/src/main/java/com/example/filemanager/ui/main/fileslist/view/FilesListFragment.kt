@@ -22,16 +22,16 @@ import com.example.filemanager.base.model.FileModel
 import com.example.filemanager.base.view.BaseFragment
 import com.example.filemanager.ui.main.MainActivity
 import com.example.filemanager.ui.main.fileslist.presenter.FilesListMVPPresenter
-import com.example.filemanager.utils.PermissionManager
 import com.example.filemanager.utils.getFileModelsFromFiles
 import com.example.filemanager.utils.getFilesFromPath
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_files_list.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import javax.inject.Inject
 
 
-class FilesListFragment : BaseFragment(), FilesListMVPView {
+class FilesListFragment : BaseFragment(), FilesListMVPView{
 
     override fun openSettingsActivity() {
     }
@@ -39,8 +39,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
     companion object {
         internal const val ARG_PATH: String = "com.example.filemanager.fileslist.path"
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build(ARG_PATH)
-
-        private const val REQUEST_READ_EXTERNAL_STORAGE = 1
     }
 
     @Inject
@@ -49,7 +47,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
     private val filesListRvAdapter: FilesRecyclerViewAdapter by lazy { FilesRecyclerViewAdapter() }
     private var filesList = mutableListOf<FileModel>()
     private lateinit var mCallback: OnItemClickListener
-    private lateinit var permissionManager: PermissionManager
 
     interface OnItemClickListener {
         fun onClick(fileModel: FileModel)
@@ -60,9 +57,9 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        permissionManager = PermissionManager(context)
-
         context.let {
+
+
             if (checkSelfPermission(
                     it,
                     Manifest.permission.READ_EXTERNAL_STORAGE
@@ -72,7 +69,9 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_DENIED
             ) {
+
                 askForMultiplePermissions()
+
             } else {
                 loadFiles()
             }
@@ -123,9 +122,9 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
         }
     }
 
-
     //called in onViewCreated
     override fun setUp() {
+
         initViews()
     }
 
@@ -133,7 +132,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
         super.onConfigurationChanged(newConfig)
         setOrientation(newConfig.orientation)
     }
-
 
     private fun setOrientation(orientation: Int) {
         context?.let { ctx ->
@@ -175,16 +173,14 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
         }
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
 
         when (requestCode) {
-            13 -> {
+            13-> {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] ==PackageManager.PERMISSION_GRANTED) {
-                    //Permissions were granted
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
 
-                    // app restart necessary
+                    // restart app
                     val mStartActivity = Intent(context, MainActivity::class.java)
                     val mPendingIntentId = 123456
                     val mPendingIntent = PendingIntent.getActivity(
@@ -194,19 +190,22 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
                         PendingIntent.FLAG_CANCEL_CURRENT
                     )
                     val mgr = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                    mgr.set(AlarmManager.RTC, System.currentTimeMillis(), mPendingIntent)
+                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() , mPendingIntent)
                     System.exit(0)
 
-
                 } else {
-                    Toast.makeText(context,"For using this app grant the storage permissions!", Toast.LENGTH_LONG).show()
+                    // Permission was denied
+                    context?.let {
+                        Toasty.warning(
+                            it, "For using the app you must grant the necessary permissions!",
+                            Toast.LENGTH_LONG, true).show()
+                    }
+
                 }
             }
-
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
 
     override fun onDestroy() {
         presenter.onDetach()
@@ -224,5 +223,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView {
             return fragment
         }
     }
+
 }
 
