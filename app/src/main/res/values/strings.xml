@@ -12,6 +12,9 @@
     <string name="change_def_folder">Click to change the default folder</string>
     <string name="title_edt_pref">Default folder</string>
     <string name="title_basic_settings">Basic Settings</string>
+    <string name="delete_title">Delete</string>
+    <string name="file_change_broadcast">com.example.filemanager.file_change_broadcast</string>
+
 
 
 </resources>
