@@ -55,7 +55,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
             return when (item?.itemId) {
                 R.id.action_delete -> {
                     for (fileItem in selectedItems) {
-                        
+
                         FileUtilsDeleteFile(fileItem)
                     }
                     mode?.finish()
