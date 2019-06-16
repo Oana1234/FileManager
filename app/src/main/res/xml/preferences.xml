@@ -2,18 +2,17 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-            android:title="Basic Settings"
+            android:title="@string/title_basic_settings"
    >
 
     <EditTextPreference
             android:id="@+id/edt_path"
             android:key="path"
-            android:summary="Click to change the default folder"
-            android:title="Default Folder"
+            android:summary="@string/change_def_folder"
+            android:title="@string/title_edt_pref"
             android:dialogLayout="@layout/settings_dialog_edit_text"
             android:dialogMessage="Change the default folder path"
             android:icon="@drawable/icondefault"
-            android:padding="0dp"
 
          />
 

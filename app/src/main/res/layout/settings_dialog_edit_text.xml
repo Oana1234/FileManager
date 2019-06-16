@@ -7,7 +7,7 @@
         android:theme="@style/AppAlertDialogContent">
 
     <LinearLayout
-            android:id="@+id/edittext_container"
+            android:id="@+id/edt_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

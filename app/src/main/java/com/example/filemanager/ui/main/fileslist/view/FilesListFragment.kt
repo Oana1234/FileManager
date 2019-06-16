@@ -94,7 +94,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
                 filesListRvAdapter.refreshList(filesList)
             }
         }
-
     }
 
     override fun onCreateView(
@@ -112,6 +111,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
             setOrientation(resources.configuration.orientation)
 
             filesListRvAdapter.onItemClickListener = { file, itemView: View, _: Int ->
+
                 mCallback.onClick(file)
 
             }
@@ -126,6 +126,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
     override fun setUp() {
 
         initViews()
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -148,7 +149,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
 
     private fun hasPermission(permission: String): Boolean {
         return context?.let {
-            ContextCompat.checkSelfPermission(
+            checkSelfPermission(
                 it,
                 permission
             )
@@ -196,15 +197,30 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
                 } else {
                     // Permission was denied
                     context?.let {
-                        Toasty.warning(
-                            it, "For using the app you must grant the necessary permissions!",
-                            Toast.LENGTH_LONG, true).show()
                     }
 
                 }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    fun checkEmptyFolderMessage() {
+        if (filesList.isEmpty()) {
+            context?.let {
+                Toasty.info(
+                    it, getString(R.string.message_empty_folder),
+                    Toast.LENGTH_LONG, true).show()
+            }
+        }
+    }
+
+    fun showPermissionDenied(){
+        context?.let {
+            Toasty.warning(
+                it, getString(R.string.permission_denied),
+                Toast.LENGTH_LONG, true).show()
+        }
     }
 
     override fun onDestroy() {

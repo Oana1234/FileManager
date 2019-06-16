@@ -20,13 +20,12 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Pictuers" />
+            />
 
     <TextView
             android:id="@+id/folderTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="(Folder)"
             android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@id/nameTextView"
@@ -37,7 +36,6 @@
             android:id="@+id/totalSizeTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="4 MB"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

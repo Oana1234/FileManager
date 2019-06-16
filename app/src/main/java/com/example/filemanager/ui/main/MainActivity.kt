@@ -1,8 +1,6 @@
 package com.example.filemanager.ui.main
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import androidx.fragment.app.Fragment
@@ -23,6 +21,7 @@ import android.widget.Toast
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
 import com.example.filemanager.ui.settings.SettingsActivity
+import es.dmoral.toasty.Toasty
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragment.OnItemClickListener{
 
@@ -66,7 +65,8 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         backStackManager.onStackChangeListener = {
         }
 
-        backStackManager.addToStack(fileModel = FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
+        backStackManager.addToStack(fileModel = FileModel(Environment.getExternalStorageDirectory().absolutePath,
+            FileType.FOLDER, "/", 0.0))
     }
 
     override fun onFragmentAttached() {
@@ -117,7 +117,9 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         val id = item.itemId
 
         when(id){
-            R.id.action_refresh -> Toast.makeText(this@MainActivity, "List automatically refreshed (AutoUpdatableAdapter)", Toast.LENGTH_LONG).show()
+            R.id.action_refresh -> Toasty.info(
+                this, getString(R.string.message_refresh_list),
+                Toast.LENGTH_LONG, true).show()
             R.id.action_settings ->{
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)

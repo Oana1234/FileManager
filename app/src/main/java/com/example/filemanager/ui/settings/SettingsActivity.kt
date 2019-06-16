@@ -65,7 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         defaultFolderPath = sharedPreferences.getString("path", Environment.getExternalStorageDirectory().absolutePath)
     }
 
-    fun updateSummary(editTextPreference: EditTextPreference) {
+    private fun updateSummary(editTextPreference: EditTextPreference) {
         editTextPreference.summary = defaultFolderPath
     }
 

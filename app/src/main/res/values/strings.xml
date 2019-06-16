@@ -6,6 +6,12 @@
     <string name="delete">Delete</string>
     <string name="rationale_title">Permission required</string>
     <string name="rationale_message">we need permission for read <b>storage</b> and write <b>storage</b></string>
+    <string name="message_empty_folder">Empty folder!</string>
+    <string name="permission_denied">For using the app you must grant the necessary permissions!</string>
+    <string name="message_refresh_list">List automatically refreshed! (AutoUpdatableAdapter)</string>
+    <string name="change_def_folder">Click to change the default folder</string>
+    <string name="title_edt_pref">Default folder</string>
+    <string name="title_basic_settings">Basic Settings</string>
 
 
 </resources>
