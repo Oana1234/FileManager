@@ -24,13 +24,12 @@ import androidx.preference.PreferenceManager
 import com.example.filemanager.ui.settings.SettingsActivity
 import es.dmoral.toasty.Toasty
 import android.graphics.Color
+import com.example.filemanager.ui.main.fileslist.view.ListRefreshCallback
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.item_file_row.*
 import com.example.filemanager.utils.deleteFile as FileUtilsDeleteFile
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragment.OnItemClickListener {
-
-    val EXTRA_PATH = "com.example.filemanager.ui.main.path"
 
     @Inject
     internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -41,6 +40,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
     override fun getDefaultFragment(): BaseFragment = FilesListFragment()
      private var multiSelect = false
      private val selectedItems = ArrayList<String>()
+    private lateinit var listRefreshCallback: ListRefreshCallback
 
     private val actionModeCallback = object : ActionMode.Callback {
 
@@ -74,6 +74,8 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
                             .show()
                     }
                     mode?.finish()
+                    listRefreshCallback.onListRefresh()
+
                     true
                 }
                 else -> false
@@ -87,13 +89,12 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         override fun onDestroyActionMode(mode: ActionMode?) {
             multiSelect = false
             selectedItems.clear()
-              mActionMode = null
+            mActionMode = null
 
         }
     }
 
-
-     fun selectItem(item: String?) {
+     private fun selectItem(item: String?) {
          if (multiSelect) {
              if (selectedItems.contains(item)) {
                  selectedItems.remove(item)
@@ -130,6 +131,16 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         initBackStack()
 
     }
+
+
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
+
+        if (fragment is FilesListFragment) {
+            listRefreshCallback = fragment as ListRefreshCallback
+        }
+    }
+
 
     private fun initBackStack() {
         backStackManager.onStackChangeListener = {
@@ -196,10 +207,15 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         val id = item.itemId
 
         when (id) {
-            R.id.action_refresh -> Toasty.info(
-                this, getString(R.string.message_refresh_list),
-                Toast.LENGTH_LONG, true
-            ).show()
+            R.id.action_refresh -> {
+                Toasty.info(
+                    this, getString(R.string.message_refresh_list),
+                    Toast.LENGTH_LONG, true
+                ).show()
+
+                listRefreshCallback.onListRefresh()
+
+            }
             R.id.action_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
@@ -207,13 +223,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun updateContentOfCurrentFragment() {
-        val broadcastIntent = Intent()
-        broadcastIntent.action = applicationContext.getString(R.string.file_change_broadcast)
-        broadcastIntent.putExtra(EXTRA_PATH, backStackManager.top.path)
-        sendBroadcast(broadcastIntent)
     }
 
 

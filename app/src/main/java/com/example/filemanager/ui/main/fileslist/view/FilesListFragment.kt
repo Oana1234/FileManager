@@ -30,8 +30,12 @@ import org.jetbrains.anko.uiThread
 import javax.inject.Inject
 
 
-class FilesListFragment : BaseFragment(), FilesListMVPView{
+class FilesListFragment : BaseFragment(), FilesListMVPView,  ListRefreshCallback {
 
+    override fun onListRefresh() {
+        loadFiles()
+
+    }
     override fun openSettingsActivity() {
     }
 
@@ -42,7 +46,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
 
     @Inject
     internal lateinit var presenter: FilesListMVPPresenter<FilesListMVPView>
-
     private val filesListRvAdapter: FilesRecyclerViewAdapter by lazy { FilesRecyclerViewAdapter() }
     private var filesList = mutableListOf<FileModel>()
     private lateinit var mCallback: OnItemClickListener
@@ -83,6 +86,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
         }
     }
 
+
     private fun loadFiles() {
         doAsync {
             arguments?.getString(ARG_PATH)?.let {
@@ -91,6 +95,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
 
             uiThread {
                 filesListRvAdapter.refreshList(filesList)
+
             }
         }
     }
@@ -119,6 +124,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView{
                 true
             }
         }
+
     }
 
     //called in onViewCreated
