@@ -26,8 +26,7 @@ import es.dmoral.toasty.Toasty
 import android.graphics.Color
 import kotlinx.android.synthetic.main.item_file_row.*
 import com.example.filemanager.utils.deleteFile as FileUtilsDeleteFile
-
-
+import cn.pedant.SweetAlert.SweetAlertDialog
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragment.OnItemClickListener {
 
@@ -40,8 +39,8 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
     private var mActionMode: ActionMode? = null
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
     override fun getDefaultFragment(): BaseFragment = FilesListFragment()
-     private var multiSelect = false
-     private val selectedItems = ArrayList<String>()
+    private var multiSelect = false
+    private val selectedItems = ArrayList<String>()
 
     private val actionModeCallback = object : ActionMode.Callback {
 
@@ -56,11 +55,8 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
             return when (item?.itemId) {
                 R.id.action_delete -> {
                     for (fileItem in selectedItems) {
-
+                        
                         FileUtilsDeleteFile(fileItem)
-                        Toast.makeText(this@MainActivity, " Successfully Deleted", Toast.LENGTH_LONG).show()
-                        updateContentOfCurrentFragment()
-
                     }
                     mode?.finish()
                     true
@@ -76,25 +72,25 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         override fun onDestroyActionMode(mode: ActionMode?) {
             multiSelect = false
             selectedItems.clear()
-              mActionMode = null
+            mActionMode = null
 
         }
     }
 
 
-     fun selectItem(item: String?) {
-         if (multiSelect) {
-             if (selectedItems.contains(item)) {
-                 selectedItems.remove(item)
-                 file_row.setBackgroundColor(Color.WHITE)
-             } else {
-                 if (item != null) {
-                     selectedItems.add(item)
-                 }
-                 file_row.setBackgroundColor(Color.LTGRAY)
-             }
-         }
-     }
+    fun selectItem(item: String?) {
+        if (multiSelect) {
+            if (selectedItems.contains(item)) {
+                selectedItems.remove(item)
+                file_row.setBackgroundColor(Color.WHITE)
+            } else {
+                if (item != null) {
+                    selectedItems.add(item)
+                }
+                file_row.setBackgroundColor(Color.LTGRAY)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,7 +154,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
     }
 
     override fun onLongClick(fileModel: FileModel) {
-        when(mActionMode){
+        when (mActionMode) {
             null -> {
                 mActionMode = this.startActionMode(actionModeCallback)
                 selectItem(fileModel.path)
