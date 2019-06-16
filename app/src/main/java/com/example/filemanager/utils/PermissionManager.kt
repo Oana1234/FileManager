@@ -1,10 +1,20 @@
 package com.example.filemanager.utils
 
+import android.Manifest
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.content.ContextCompat
+import java.nio.file.Files.size
+import android.Manifest.permission
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_CONTACTS
+
+
+
+
 
 
 public class PermissionManager {
@@ -30,6 +40,7 @@ public class PermissionManager {
         }
         return false
     }
+
 
     fun checkPermission(context: Context, permission: String, listener: PermissionAskListener) {
         if (shouldAskPermission(context, permission)) {
