@@ -24,6 +24,7 @@ import androidx.preference.PreferenceManager
 import com.example.filemanager.ui.settings.SettingsActivity
 import es.dmoral.toasty.Toasty
 import android.graphics.Color
+import android.util.Log
 import com.example.filemanager.ui.main.fileslist.view.ListRefreshCallback
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.item_file_row.*
@@ -36,11 +37,12 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
 
     private val backStackManager = BackStackManager()
     private var mActionMode: ActionMode? = null
+    private var multiSelect = false
+    private val selectedItems = ArrayList<String>()
+    private lateinit var listRefreshCallback: ListRefreshCallback
+
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
     override fun getDefaultFragment(): BaseFragment = FilesListFragment()
-     private var multiSelect = false
-     private val selectedItems = ArrayList<String>()
-    private lateinit var listRefreshCallback: ListRefreshCallback
 
     private val actionModeCallback = object : ActionMode.Callback {
 
@@ -54,12 +56,14 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.action_delete -> {
+                    Log.i("AAAAA", selectedItems.size.toString())
                     for (fileItem in selectedItems) {
 
                         SweetAlertDialog(this@MainActivity, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("Are you sure?")
                             .setContentText("Won't be able to recover this file!")
                             .setConfirmText("Yes,delete it!")
+                            .setCancelText("No")
                             .setConfirmClickListener { sDialog ->
                                 sDialog
                                     .setTitleText("Deleted!")
@@ -69,12 +73,16 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
                                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 
                                 FileUtilsDeleteFile(fileItem)
+                                listRefreshCallback.onListRefresh()
 
+
+                            }
+                            .setCancelClickListener {
+                                it.cancel()
                             }
                             .show()
                     }
                     mode?.finish()
-                    listRefreshCallback.onListRefresh()
 
                     true
                 }
@@ -93,20 +101,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
 
         }
     }
-
-     private fun selectItem(item: String?) {
-         if (multiSelect) {
-             if (selectedItems.contains(item)) {
-                 selectedItems.remove(item)
-                 file_row.setBackgroundColor(Color.WHITE)
-             } else {
-                 if (item != null) {
-                     selectedItems.add(item)
-                 }
-                 file_row.setBackgroundColor(Color.LTGRAY)
-             }
-         }
-     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +125,19 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         initBackStack()
 
     }
+
+     private fun selectItem(item: String?) {
+         if (multiSelect) {
+             if (selectedItems.contains(item)) {
+                 selectedItems.remove(item)
+             } else {
+                 if (item != null) {
+                     selectedItems.add(item)
+                 }
+             }
+         }
+     }
+
 
 
     override fun onAttachFragment(fragment: Fragment) {

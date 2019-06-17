@@ -14,6 +14,8 @@
     <string name="title_basic_settings">Basic Settings</string>
     <string name="delete_title">Delete</string>
     <string name="file_change_broadcast">com.example.filemanager.file_change_broadcast</string>
+    <string name="txt_def_folder">Your default folder is: </string>
+    <string name="path_refreshed_message">Default path refreshed!</string>
 
 
 

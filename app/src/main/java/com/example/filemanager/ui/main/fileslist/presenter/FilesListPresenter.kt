@@ -11,17 +11,5 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 
 class FilesListPresenter<V : FilesListMVPView>@Inject internal constructor( schedulerProvider: SchedulerProvider, compositeDisposable: CompositeDisposable) : BasePresenter<V>( schedulerProvider = schedulerProvider, compositeDisposable = compositeDisposable), FilesListMVPPresenter<V> {
 
-    override fun deleteFile() {
-    }
-
-    override fun resetToolbarToDefaultState() {
-    }
-
-    override fun unselectSessionList() {
-    }
-
-    override fun updateSession() {
-    }
-
 
 }
