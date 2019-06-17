@@ -1,4 +1,4 @@
-package com.example.filemanager.ui.main
+package com.example.filemanager.utils
 
 import com.example.filemanager.base.model.FileModel
 

@@ -34,9 +34,6 @@ class FilesListFragment : BaseFragment(), FilesListMVPView,  ListRefreshCallback
 
     override fun onListRefresh() {
         loadFiles()
-
-    }
-    override fun openSettingsActivity() {
     }
 
     companion object {

@@ -5,4 +5,5 @@ import com.example.filemanager.base.view.MVPView
 
 interface FilesListMVPPresenter<V : MVPView> : MVPPresenter<V>{
 
+  //  fun loadItems(path :String) : MutableList<FileModel>
 }

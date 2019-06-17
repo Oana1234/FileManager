@@ -23,11 +23,9 @@ import android.view.MenuItem
 import androidx.preference.PreferenceManager
 import com.example.filemanager.ui.settings.SettingsActivity
 import es.dmoral.toasty.Toasty
-import android.graphics.Color
-import android.util.Log
 import com.example.filemanager.ui.main.fileslist.view.ListRefreshCallback
+import com.example.filemanager.utils.BackStackManager
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
-import kotlinx.android.synthetic.main.item_file_row.*
 import com.example.filemanager.utils.deleteFile as FileUtilsDeleteFile
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragment.OnItemClickListener {
@@ -56,7 +54,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.action_delete -> {
-                    Log.i("AAAAA", selectedItems.size.toString())
                     for (fileItem in selectedItems) {
 
                         SweetAlertDialog(this@MainActivity, SweetAlertDialog.WARNING_TYPE)
@@ -137,8 +134,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
              }
          }
      }
-
-
 
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
