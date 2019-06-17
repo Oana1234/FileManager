@@ -5,10 +5,6 @@ import com.example.filemanager.ui.main.fileslist.view.FilesListMVPView
 import com.example.filemanager.utils.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
-import com.example.filemanager.base.model.FileModel
-import com.example.filemanager.utils.getFileModelsFromFiles
-import com.example.filemanager.utils.getFilesFromPath
-
 
 class FilesListPresenter<V : FilesListMVPView>@Inject internal constructor( schedulerProvider: SchedulerProvider, compositeDisposable: CompositeDisposable) : BasePresenter<V>( schedulerProvider = schedulerProvider, compositeDisposable = compositeDisposable), FilesListMVPPresenter<V> {
 

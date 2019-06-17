@@ -21,8 +21,8 @@ import com.example.filemanager.base.model.FileModel
 import com.example.filemanager.base.view.BaseFragment
 import com.example.filemanager.ui.main.MainActivity
 import com.example.filemanager.ui.main.fileslist.presenter.FilesListMVPPresenter
-import com.example.filemanager.utils.getFileModelsFromFiles
-import com.example.filemanager.utils.getFilesFromPath
+import com.example.filemanager.utils.FileUtils
+import com.example.filemanager.utils.FileUtils.getFilesFromPath
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_files_list.*
 import org.jetbrains.anko.doAsync
@@ -87,7 +87,7 @@ class FilesListFragment : BaseFragment(), FilesListMVPView,  ListRefreshCallback
     private fun loadFiles() {
         doAsync {
             arguments?.getString(ARG_PATH)?.let {
-                filesList = getFileModelsFromFiles(getFilesFromPath(it))
+                filesList = FileUtils.getFileModelsFromFiles(getFilesFromPath(it))
             }
 
             uiThread {

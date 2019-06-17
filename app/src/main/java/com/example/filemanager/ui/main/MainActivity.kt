@@ -11,7 +11,6 @@ import com.example.filemanager.base.view.BaseActivity
 import com.example.filemanager.base.view.BaseFragment
 import com.example.filemanager.ui.main.fileslist.view.FilesListFragment
 import com.example.filemanager.utils.FileType
-import com.example.filemanager.utils.launchFileIntent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,8 +24,9 @@ import com.example.filemanager.ui.settings.SettingsActivity
 import es.dmoral.toasty.Toasty
 import com.example.filemanager.ui.main.fileslist.view.ListRefreshCallback
 import com.example.filemanager.utils.BackStackManager
+import com.example.filemanager.utils.FileUtils
+import com.example.filemanager.utils.FileUtils.launchFileIntent
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.filemanager.utils.deleteFile as FileUtilsDeleteFile
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragment.OnItemClickListener {
 
@@ -69,7 +69,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, FilesListFragme
                                     .setConfirmClickListener(null)
                                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
 
-                                FileUtilsDeleteFile(fileItem)
+                                FileUtils.deleteFile(fileItem)
                                 listRefreshCallback.onListRefresh()
 
 
